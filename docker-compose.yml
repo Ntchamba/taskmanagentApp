@@ -1,0 +1,17 @@
+services:
+  app:
+    build: .
+    image: task-manager
+    container_name: task-manager
+    ports:
+      - "3000:3000"
+    environment:
+      # Override in a .env file next to this compose file, or export before `docker compose up`.
+      DB_PATH: /data/taskmanager.db
+      JWT_SECRET: ${JWT_SECRET:-dev-insecure-secret-change-me}
+    volumes:
+      - taskdata:/data
+    restart: unless-stopped
+
+volumes:
+  taskdata:

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>wellTask — Sign in</title>
+    <link rel="stylesheet" href="/css/styles.css" />
+  </head>
+  <body class="auth-body">
+    <main class="auth-card">
+      <div class="brand"><span class="brand__mark">✳</span> wellTask</div>
+      <h2 id="form-title">Welcome back</h2>
+      <p id="form-subtitle" class="muted">Log in to your account</p>
+
+      <form id="auth-form" novalidate>
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" autocomplete="email" required />
+
+        <label for="password">Password</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          autocomplete="current-password"
+          minlength="8"
+          required
+        />
+
+        <p id="error" class="error" role="alert"></p>
+
+        <button type="submit" id="submit-btn" class="btn-primary">Log in</button>
+      </form>
+
+      <p class="muted center">
+        <a href="#" id="toggle-mode">Need an account? Sign up</a>
+      </p>
+    </main>
+
+    <script type="module" src="/js/auth.js"></script>
+  </body>
+</html>

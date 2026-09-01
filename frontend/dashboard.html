@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>wellTask — Tasks Board</title>
+    <link rel="stylesheet" href="/css/styles.css" />
+  </head>
+  <body>
+    <div class="app">
+      <!-- ================= Sidebar ================= -->
+      <aside class="sidebar">
+        <div class="sidebar__brand"><span class="brand__mark">✳</span> wellTask</div>
+
+        <div class="profile">
+          <div class="profile__avatar" id="profile-avatar">·</div>
+          <div class="profile__meta">
+            <span class="profile__name" id="profile-name">Loading…</span>
+            <span class="profile__email" id="user-email"></span>
+          </div>
+        </div>
+
+        <nav class="nav">
+          <button class="nav__item is-active" type="button" data-view="board">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg>
+            <span>Tasks Board</span>
+          </button>
+          <button class="nav__item" type="button" data-view="my">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 17 2 2 4-4"/><path d="m3 7 2 2 4-4"/><path d="M13 6h8"/><path d="M13 12h8"/><path d="M13 18h8"/></svg>
+            <span>My Tasks</span>
+            <span class="pill pill--red" id="mytasks-badge" hidden>0</span>
+          </button>
+          <button class="nav__item" type="button" disabled>
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <span>Timesheet</span>
+          </button>
+          <button class="nav__item" type="button" disabled>
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></svg>
+            <span>Calendar</span>
+          </button>
+          <button class="nav__item" type="button" disabled>
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            <span>Members</span>
+          </button>
+          <button class="nav__item" type="button" disabled>
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
+            <span>Chats</span>
+          </button>
+        </nav>
+
+        <button class="sidebar__add" id="sidebar-add" type="button">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+          <span>Add task</span>
+        </button>
+
+        <div class="sidebar__footer">
+          <button class="nav__item" type="button" disabled>
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m4.93 4.93 4.24 4.24"/><path d="m14.83 9.17 4.24-4.24"/><path d="m14.83 14.83 4.24 4.24"/><path d="m9.17 14.83-4.24 4.24"/><circle cx="12" cy="12" r="4"/></svg>
+            <span>Help Center</span>
+          </button>
+          <button class="nav__item" id="logout-btn" type="button">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>
+            <span>Log out</span>
+          </button>
+        </div>
+      </aside>
+
+      <!-- ================= Content ================= -->
+      <main class="content">
+        <header class="board-header">
+          <div class="board-header__titles">
+            <h1>Tasks Board</h1>
+            <p id="board-sub" class="board-header__sub">Loading…</p>
+          </div>
+
+          <div class="board-toolbar">
+            <details class="filter" id="tag-filter">
+              <summary>Tags <span class="filter__count" id="tag-filter-count" hidden>0</span></summary>
+              <div class="filter__panel">
+                <div class="filter__list" id="tag-filter-list"></div>
+                <form class="filter__new" id="new-tag-form">
+                  <input type="text" id="new-tag-input" placeholder="New tag" maxlength="50" />
+                  <button type="submit" class="btn-ghost">Add</button>
+                </form>
+                <p class="filter__error" id="tag-error"></p>
+              </div>
+            </details>
+
+            <details class="filter" id="member-filter">
+              <summary>Members <span class="filter__count" id="member-filter-count" hidden>0</span></summary>
+              <div class="filter__panel">
+                <div class="filter__list" id="member-filter-list"></div>
+              </div>
+            </details>
+
+            <button class="btn-primary" id="new-task-btn" type="button">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+              New Task
+            </button>
+          </div>
+        </header>
+
+        <div class="board" id="board">
+          <section class="column" data-stage="research">
+            <div class="column__head">
+              <span class="column__title">Research</span>
+              <span class="column__count">0</span>
+              <button class="column__add" type="button" data-stage="research" aria-label="Add task to Research">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+              </button>
+            </div>
+            <div class="column__cards"></div>
+          </section>
+
+          <section class="column" data-stage="design">
+            <div class="column__head">
+              <span class="column__title">Design</span>
+              <span class="column__count">0</span>
+              <button class="column__add" type="button" data-stage="design" aria-label="Add task to Design">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+              </button>
+            </div>
+            <div class="column__cards"></div>
+          </section>
+
+          <section class="column" data-stage="in_review">
+            <div class="column__head">
+              <span class="column__title">In Review</span>
+              <span class="column__count">0</span>
+              <button class="column__add" type="button" data-stage="in_review" aria-label="Add task to In Review">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+              </button>
+            </div>
+            <div class="column__cards"></div>
+          </section>
+
+          <section class="column" data-stage="development">
+            <div class="column__head">
+              <span class="column__title">Development</span>
+              <span class="column__count">0</span>
+              <button class="column__add" type="button" data-stage="development" aria-label="Add task to Development">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+              </button>
+            </div>
+            <div class="column__cards"></div>
+          </section>
+        </div>
+      </main>
+    </div>
+
+    <!-- ================= Task modal ================= -->
+    <div id="task-modal" class="modal-overlay" hidden>
+      <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <div class="modal__head">
+          <h2 id="modal-title">New task</h2>
+          <button type="button" id="modal-close" class="icon-btn" aria-label="Close">✕</button>
+        </div>
+
+        <form id="task-form" novalidate>
+          <label for="f-title">Title</label>
+          <input type="text" id="f-title" maxlength="200" required />
+
+          <label for="f-description">Description <span class="muted">(optional)</span></label>
+          <textarea id="f-description" rows="3" maxlength="2000"></textarea>
+
+          <div class="form-row">
+            <div>
+              <label for="f-stage">Column</label>
+              <select id="f-stage">
+                <option value="research">Research</option>
+                <option value="design">Design</option>
+                <option value="in_review">In Review</option>
+                <option value="development">Development</option>
+              </select>
+            </div>
+            <div>
+              <label for="f-due">Due date</label>
+              <input type="date" id="f-due" />
+            </div>
+          </div>
+
+          <label>Priority</label>
+          <div class="priority-picker" id="priority-picker">
+            <button type="button" class="prio prio--low" data-value="low">Low</button>
+            <button type="button" class="prio prio--medium" data-value="medium">Medium</button>
+            <button type="button" class="prio prio--high" data-value="high">High</button>
+          </div>
+
+          <label for="f-category">Tag</label>
+          <select id="f-category">
+            <option value="">No tag</option>
+          </select>
+
+          <label>Assignees</label>
+          <div class="assignee-picker" id="assignee-picker"></div>
+
+          <p id="task-form-error" class="error" role="alert"></p>
+
+          <div class="modal__actions">
+            <button type="button" id="delete-task-btn" class="btn-danger" hidden>Delete</button>
+            <span class="spacer"></span>
+            <button type="button" id="cancel-task-btn" class="btn-ghost">Cancel</button>
+            <button type="submit" class="btn-primary">Save</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script type="module" src="/js/dashboard.js"></script>
+  </body>
+</html>
