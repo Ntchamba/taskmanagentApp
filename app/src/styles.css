@@ -87,6 +87,9 @@ textarea { width: 100%; resize: vertical; }
 .row.is-done .row-title { text-decoration: line-through; color: var(--muted); }
 .check { width: 18px; height: 18px; accent-color: var(--done); flex: none; cursor: pointer; }
 .row-main { flex: 1; min-width: 0; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; border: 0; background: none; text-align: left; padding: 8px 0; cursor: pointer; }
+.row-delete { flex: none; border: 0; background: none; color: var(--muted); cursor: pointer; padding: 6px; border-radius: 6px; display: grid; place-items: center; font-size: 13px; font-weight: 600; }
+.row-delete:hover { color: var(--late); background: color-mix(in srgb, var(--late) 10%, transparent); }
+.row-delete.is-confirming { background: var(--late); color: #fff; padding: 6px 10px; }
 .row-time { font: 500 13px var(--font-mono); color: var(--muted); font-variant-numeric: tabular-nums; }
 .row-title { flex: 1 1 160px; min-width: 0; font-weight: 500; }
 .row-meta { display: flex; gap: 6px; flex-wrap: wrap; }
